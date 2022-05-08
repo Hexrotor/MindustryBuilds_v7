@@ -2,9 +2,9 @@ name: Build Artifacts
 
 on:
   workflow_dispatch:
-  
-  schedule:
-    - cron: '20 1,12,7 * * *'
+  push:
+    tags:
+      - '*'
 
 jobs:
   deploy:
