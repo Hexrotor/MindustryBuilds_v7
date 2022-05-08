@@ -1,0 +1,22 @@
+name: update_tags
+
+on: 
+  workflow_dispatch:
+
+  schedule:
+    - cron: '0 1,12 * * *'
+    
+jobs:
+  runPush:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update repo tags
+      run: |
+        git clone --depth=1 --branch=master https://github.com/Hexrotor/MindustryBuilds_v7 ../MindustryBuilds
+        cd ../MindustryBuilds
+        BNUM=$(($GITHUB_RUN_NUMBER + 20000))
+        git tag ${BNUM}
+        git config --global user.name "Github Actions"
+        git push https://Hexrotor:${{ secrets.API_TOKEN_GITHUB }}@github.com/Hexrotor/MindustryBuilds_v7 ${BNUM}
