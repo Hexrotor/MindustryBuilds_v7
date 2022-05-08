@@ -37,6 +37,7 @@ jobs:
         ./gradlew desktop:dist server:dist android:assembleRelease -Pbuildversion=${RELEASE_VERSION} -PversionType=bleeding-edge-hex --stacktrace
         mv desktop/build/libs/Mindustry.jar desktop/build/libs/Mindustry-BE-v7-Desktop-${RELEASE_VERSION}.jar
         mv server/build/libs/server-release.jar server/build/libs/Mindustry-BE-v7-Server-${RELEASE_VERSION}.jar
+        ls -R android/build/outputs/apk
         mv android/build/outputs/apk/standard/release/android-standard-release.apk android/build/outputs/apk/standard/release/Mindustry-BE-v7-Android-${RELEASE_VERSION}.apk
     - name: Upload desktop artifacts
       uses: svenstaro/upload-release-action@v2
