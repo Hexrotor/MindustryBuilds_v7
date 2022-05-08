@@ -35,25 +35,25 @@ jobs:
         sed -i 's/Mindustry/MDTBEv7/g' android/res/values/strings.xml
         ./gradlew pack
         ./gradlew desktop:dist server:dist android:assembleRelease -Pbuildversion=${RELEASE_VERSION} -PversionType=bleeding-edge-hex --stacktrace
-        mv desktop/build/libs/Mindustry.jar desktop/build/libs/Mindustry-BE-v7-Desktop-${RELEASE_VERSION}.jar
-        mv server/build/libs/server-release.jar server/build/libs/Mindustry-BE-v7-Server-${RELEASE_VERSION}.jar
+        mv desktop/build/libs/Mindustry.jar desktop/build/libs/MDTBE-erekir-Desktop-${RELEASE_VERSION}.jar
+        mv server/build/libs/server-release.jar server/build/libs/MDTBE-erekir-Server-${RELEASE_VERSION}.jar
         ls -R android/build/outputs/apk
-        mv android/build/outputs/apk/release/android-release.apk android/build/outputs/apk/release/Mindustry-BE-v7-Android-${RELEASE_VERSION}.apk
+        mv android/build/outputs/apk/release/android-release.apk android/build/outputs/apk/release/MDTBE-erekir-Android-${RELEASE_VERSION}.apk
     - name: Upload desktop artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/desktop/build/libs/Mindustry-BE-v7-Desktop-${{ env.RELEASE_VERSION }}.jar
+        file: Mindustry/desktop/build/libs/MDTBE-erekir-Desktop-${{ env.RELEASE_VERSION }}.jar
         tag: ${{ github.ref }}
     - name: Upload server artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/server/build/libs/Mindustry-BE-v7-Server-${{ env.RELEASE_VERSION }}.jar
+        file: Mindustry/server/build/libs/MDTBE-erekir-Server-${{ env.RELEASE_VERSION }}.jar
         tag: ${{ github.ref }}
     - name: Upload Android artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/android/build/outputs/apk/release/Mindustry-BE-v7-Android-${{ env.RELEASE_VERSION }}.apk
+        file: Mindustry/android/build/outputs/apk/release/MDTBE-erekir-Android-${{ env.RELEASE_VERSION }}.apk
         tag: ${{ github.ref }}
