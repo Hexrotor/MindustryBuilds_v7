@@ -17,7 +17,9 @@ jobs:
       with:
         java-version: 16
     - name: Set env
-      run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      run: |
+        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        echo "TODAY=$(date +'%Y%m%d_%H-%M-%S')" >> $GITHUB_ENV
     - name: Set up keystore
       run: |
         echo "${{ secrets.KEYSTORE_BASE64 }}" > keystore.txt
@@ -34,26 +36,26 @@ jobs:
         sed -i 's/"io.anuke.mindustry"/"io.anuke.mindustry.be.hex"/g' android/AndroidManifest.xml
         sed -i 's/Mindustry/MDTBEv7/g' android/res/values/strings.xml
         ./gradlew pack
-        ./gradlew desktop:dist server:dist android:assembleRelease -Pbuildversion=${RELEASE_VERSION} -PversionType=hexrotor_build$(date +'%Y%m%d') --stacktrace
-        mv desktop/build/libs/Mindustry.jar desktop/build/libs/MDTBE-erekir-Desktop-${RELEASE_VERSION}.jar
-        mv server/build/libs/server-release.jar server/build/libs/MDTBE-erekir-Server-${RELEASE_VERSION}.jar
+        ./gradlew desktop:dist server:dist android:assembleRelease -Pbuildversion=${RELEASE_VERSION} -PversionType=hexrotorbuild${TODAY} --stacktrace
+        mv desktop/build/libs/Mindustry.jar desktop/build/libs/MDTBE-Erekir-Desktop-${TODAY}.jar
+        mv server/build/libs/server-release.jar server/build/libs/MDTBE-Erekir-Server-${TODAY}.jar
         ls -R android/build/outputs/apk
-        mv android/build/outputs/apk/release/android-release.apk android/build/outputs/apk/release/MDTBE-erekir-Android-${RELEASE_VERSION}.apk
+        mv android/build/outputs/apk/release/android-release.apk android/build/outputs/apk/release/MDTBE-Erekir-Android-${TODAY}.apk
     - name: Upload desktop artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/desktop/build/libs/MDTBE-erekir-Desktop-${{ env.RELEASE_VERSION }}.jar
+        file: Mindustry/desktop/build/libs/MDTBE-Erekir-Desktop-${{ env.TODAY }}.jar
         tag: ${{ github.ref }}
     - name: Upload server artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/server/build/libs/MDTBE-erekir-Server-${{ env.RELEASE_VERSION }}.jar
+        file: Mindustry/server/build/libs/MDTBE-Erekir-Server-${{ env.TODAY }}.jar
         tag: ${{ github.ref }}
     - name: Upload Android artifacts
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: Mindustry/android/build/outputs/apk/release/MDTBE-erekir-Android-${{ env.RELEASE_VERSION }}.apk
+        file: Mindustry/android/build/outputs/apk/release/MDTBE-Erekir-Android-${{ env.TODAY }}.apk
         tag: ${{ github.ref }}
